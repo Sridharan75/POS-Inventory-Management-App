@@ -31,12 +31,13 @@ class DBHelper {
     );
   }
 
+
   // Create new item (journal)
-  static Future<int> createItem(String title, String? descrption) async {
+  static Future<int> createItem(String batchNo,String date,String billNo,String billDate,String dueDate,String paymentType,String comments) async {
     final db = await DBHelper.db();
 
-    final data = {'title': title, 'description': descrption};
-    final id = await db.insert('items', data,
+    final data = {'batchNo':batchNo, 'date':date,'billNo':billNo, 'billDate':billDate, 'dueDate':dueDate, 'paymentType':paymentType, 'comments':comments};
+    final id = await db.insert('grm', data,
         conflictAlgorithm: sql.ConflictAlgorithm.replace);
     return id;
   }
@@ -44,29 +45,28 @@ class DBHelper {
   // Read all items (journals)
   static Future<List<Map<String, dynamic>>> getItems() async {
     final db = await DBHelper.db();
-    return db.query('items', orderBy: "id");
+    return db.query('grm', orderBy: "id");
   }
 
   // Read a single item by id
   // The app doesn't use this method but I put here in case you want to see it
   static Future<List<Map<String, dynamic>>> getItem(int id) async {
     final db = await DBHelper.db();
-    return db.query('items', where: "id = ?", whereArgs: [id], limit: 1);
+    return db.query('grm', where: "id = ?", whereArgs: [id], limit: 1);
   }
 
   // Update an item by id
   static Future<int> updateItem(
-      int id, String title, String? descrption) async {
+      int id, String batchNo,String date,String billNo,String billDate,String dueDate,String paymentType,String comments) async {
     final db = await DBHelper.db();
 
     final data = {
-      'title': title,
-      'description': descrption,
+      'batchNo':batchNo, 'date':date,'billNo':billNo, 'billDate':billDate, 'dueDate':dueDate, 'paymentType':paymentType, 'comments':comments,
       'createdAt': DateTime.now().toString()
     };
 
     final result =
-    await db.update('items', data, where: "id = ?", whereArgs: [id]);
+    await db.update('grm', data, where: "id = ?", whereArgs: [id]);
     return result;
   }
 
@@ -74,7 +74,7 @@ class DBHelper {
   static Future<void> deleteItem(int id) async {
     final db = await DBHelper.db();
     try {
-      await db.delete("items", where: "id = ?", whereArgs: [id]);
+      await db.delete("grm", where: "id = ?", whereArgs: [id]);
     } catch (err) {
       debugPrint("Something went wrong when deleting an item: $err");
     }

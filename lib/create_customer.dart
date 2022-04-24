@@ -111,7 +111,7 @@ class _CreateCustomerState extends State<CreateCustomer> {
                   ),
                 );
               },
-              child: Text('Contry'),
+              child: const Text('Contry'),
             ),
             const ListTile(
               leading: Icon(Icons.qr_code_scanner_rounded),
